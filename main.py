@@ -29,12 +29,12 @@ def youtube_download(video_url,path):
     return name
 
 def convert_to_audio(name):
-    video=moviepy.editor.VideoFileClip(f"{name}.mp4")
+    video=moviepy.editor.VideoFileClip(f"{path}/{name}.mp4")
     audio=video.audio
-    audio.write_audiofile(f"{name}.mp3")
+    audio.write_audiofile(f"{path}/{name}.mp3")
     video.close()
 
-path=r'c:\repo\downloading_everything'
+path = '/home/kirill/Документы/GitHub/downloading_everything/STUFF'
 bot = telebot.TeleBot(telebot_api)
 
 markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
@@ -86,22 +86,22 @@ def send_file(message):
         if message.text == "Видео в Телеграм":
             bot.send_message(message.chat.id, "Отправляю видео, подождите...")
             Process = "Processing"
-            file=open(f'{name}.mp4', 'rb')
+            file=open(f'{path}/{name}.mp4', 'rb')
             # Отправляем файл пользователю
             bot.send_video(message.chat.id, file, timeout=1000)
             file.close()
-            os.remove(f'{name}.mp4')
+            os.remove(f'{path}/{name}.mp4')
             send=bot.send_message(message.chat.id, "Готво, ожидаю новую ссылку")
             bot.register_next_step_handler(send, request_link)
 
         elif message.text == "Видео в документе MP4":
             bot.send_message(message.chat.id, "Отправляю документ, подождите...")
             Process = "Processing"
-            file=open(f'{name}.mp4', 'rb')
+            file=open(f'{path}/{name}.mp4', 'rb')
             # Отправляем файл пользователю
             bot.send_document(message.chat.id, file, timeout=1000)
             file.close()
-            os.remove(f'{name}.mp4')
+            os.remove(f'{path}/{name}.mp4')
             send=bot.send_message(message.chat.id,"Готво, ожидаю новую ссылку")
             bot.register_next_step_handler(send, request_link)
             
@@ -111,12 +111,12 @@ def send_file(message):
             Process = "Processing"
             convert_to_audio(name)
             bot.send_message(message.chat.id, "Отправляю mp3, подождите...")
-            file=open(f'{name}.mp3', 'rb')
+            file=open(f'{path}/{name}.mp3', 'rb')
             # Отправляем файл пользователю
             bot.send_document(message.chat.id, file, timeout=1000)
             file.close()
-            os.remove(f'{name}.mp3')
-            os.remove(f'{name}.mp4')
+            os.remove(f'{path}/{name}.mp3')
+            os.remove(f'{path}/{name}.mp4')
             send=bot.send_message(message.chat.id, "Готво, ожидаю новую ссылку")
             bot.register_next_step_handler(send, request_link)
 
@@ -130,9 +130,9 @@ def send_file(message):
             file=open('YT_download.exe', 'rb')
             something_error = bot.send_document(message.chat.id, file, timeout=1000)
             file.close()
-            os.remove(f'{name}.mp4')
+            os.remove(f'{path}/{name}.mp4')
             try:
-                os.remove(f'{name}.mp3')
+                os.remove(f'{path}/{name}.mp3')
             except:
                 pass
             Process = "Waiting Link"
